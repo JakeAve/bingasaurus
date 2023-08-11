@@ -1,0 +1,9 @@
+{
+  "tasks": {
+    "demo": "deno run -A demo.ts",
+    "clear-logs": "deno run --allow-write=./logs --allow-read=./logs scripts/clearLogs.ts"
+  },
+  "imports": {
+    "$std/": "https://deno.land/std@0.198.0/"
+  }
+}
