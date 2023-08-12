@@ -14,6 +14,12 @@ deno --version
 
 ## Demo
 
+- Clone repo
+
+```
+git clone https://github.com/JakeAve/bingasaurus.git
+```
+
 - Enter Bing Chat in a web browser
 - Open the web inspector
 - Find the value for the _U cookie
