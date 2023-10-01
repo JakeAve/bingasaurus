@@ -44,9 +44,10 @@ deno task demo
 Programmatically create prompts and receive responses from Bing API.
 
 ```typescript
-import { BingasaurusClient } from "https://deno.land/x/bingasaurus@v0.0.1/mod.ts";
-// import types from './types.ts'
-// import { BingMessageOptions } from 'https://deno.land/x/bingasaurus@v0.0.1/types.ts';
+import {
+  BingasaurusClient,
+  Types,
+} from "https://deno.land/x/bingasaurus@v<version>/mod.ts";
 
 // create a BingasaurusClient
 const client = new BingasaurusClient({
@@ -54,7 +55,7 @@ const client = new BingasaurusClient({
 });
 
 // create a conversation
-const conv = client.createConversation(JSON.parse(config));
+const conv = client.createConversation();
 
 // send messages for that conversation
 const resp1 = await conv.sendMessage("Hi, how are you today?");

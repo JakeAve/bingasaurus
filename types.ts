@@ -403,3 +403,7 @@ export interface Chat {
   prompt: string;
   response?: string;
 }
+
+export type { BingConversation } from "./utils/BingConversation.ts";
+
+export type { BingasaurusClient } from "./utils/BingasaurusClient.ts";
