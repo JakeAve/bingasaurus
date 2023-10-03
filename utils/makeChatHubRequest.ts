@@ -73,7 +73,7 @@ export function makeChatHubRequest(
           break;
         }
         if (status === ChatHubStatus.FAILED) {
-          ws.close(1000, text);
+          ws.close(1000, ChatHubStatus.FAILED);
           reject(new ChatHubError(text, responseText));
           break;
         }
