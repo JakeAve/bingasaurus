@@ -28,7 +28,11 @@ export function makeChatHubRequest(
       onUpdateStatus({ text: responseText, status: requestStatus });
     }
 
-    const ws = new WebSocket(SYDNEY_CHAT_URL);
+    const ws = new WebSocket(
+      `${SYDNEY_CHAT_URL}?sec_access_token=${
+        encodeURIComponent(query.arguments[0].conversationSignature)
+      }`,
+    );
 
     let pingInterval: number | undefined;
 
