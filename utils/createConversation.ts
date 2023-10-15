@@ -22,7 +22,10 @@ export async function createConversation(
 
   const creationResp = await fetch(CREATE_CHAT_URL, fetchOptions);
   if (creationResp.ok) {
-    return creationResp.json();
+    const data = await creationResp.json();
+    const conversationSignature =
+      creationResp.headers.get("x-sydney-encryptedconversationsignature") ?? "";
+    return { ...data, conversationSignature };
   }
 
   throw new Error(
