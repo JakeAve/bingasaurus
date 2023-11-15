@@ -3,6 +3,8 @@
     "demo": "deno run -A demo.ts",
     "clear-logs": "deno run --allow-write=./logs --allow-read=./logs scripts/clearLogs.ts"
   },
+  "lint:": { "exclude": ["logs/"] },
+  "fmt": { "exclude": ["logs/"] },
   "imports": {
     "$std/": "https://deno.land/std@0.198.0/"
   }

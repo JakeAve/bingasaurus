@@ -17,6 +17,7 @@ const TERMINAL_CHAR = "";
 
 export function makeChatHubRequest(
   query: SydneyQuery,
+  secAccessToken: string,
   options: ChatRequestHubOptions = {},
 ) {
   return new Promise<BingMessageResponse>((resolve, reject) => {
@@ -28,9 +29,12 @@ export function makeChatHubRequest(
       onUpdateStatus({ text: responseText, status: requestStatus });
     }
 
+    console.log("sec-access-token", secAccessToken);
     const ws = new WebSocket(
       `${SYDNEY_CHAT_URL}?sec_access_token=${
-        encodeURIComponent(query.arguments[0].conversationSignature)
+        encodeURIComponent(
+          secAccessToken,
+        )
       }`,
     );
 
@@ -44,10 +48,15 @@ export function makeChatHubRequest(
       }
 
       ws.send(`{"type":6}${TERMINAL_CHAR}`);
-      pingInterval = setInterval(
-        () => ws.send(`{"type":6}${TERMINAL_CHAR}`),
-        1000 * 15,
-      );
+      pingInterval = setInterval(() => {
+        try {
+          ws.send(`{"type":6}${TERMINAL_CHAR}`);
+        } catch {
+          /*(err)*/
+          // I'm not sure why occasionally this is happening now, but just ignoring the error keeps things in check
+          // console.error(err);
+        }
+      }, 1000 * 15);
       ws.send(`${JSON.stringify(query)}${TERMINAL_CHAR}`);
     };
 
@@ -91,6 +100,7 @@ export function makeChatHubRequest(
 
     const handleClose = (event: Event) => {
       clearInterval(pingInterval);
+      console.log("closing because of", event);
       ws.removeEventListener("open", handleOpen);
       ws.removeEventListener("message", handleMessage);
       ws.removeEventListener("error", handleError);

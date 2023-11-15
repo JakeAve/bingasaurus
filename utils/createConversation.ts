@@ -23,9 +23,9 @@ export async function createConversation(
   const creationResp = await fetch(CREATE_CHAT_URL, fetchOptions);
   if (creationResp.ok) {
     const data = await creationResp.json();
-    const conversationSignature =
+    const encryptedConversationSignature =
       creationResp.headers.get("x-sydney-encryptedconversationsignature") ?? "";
-    return { ...data, conversationSignature };
+    return { ...data, encryptedConversationSignature };
   }
 
   throw new Error(

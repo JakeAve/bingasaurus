@@ -152,6 +152,7 @@ export interface CreateConversationResponse {
   conversationId: string;
   clientId: string;
   conversationSignature: string;
+  encryptedConversationSignature: string;
   result: {
     value: string;
     message: null;

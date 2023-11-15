@@ -15,6 +15,7 @@ export class BingConversation {
   #clientId?: string;
   #conversationId?: string;
   #conversationSignature?: string;
+  #encryptedConversationSignature?: string;
   #isSessionStarted: boolean;
   #messages: Chat[];
   #history: BingMessageResponse[];
@@ -75,15 +76,22 @@ export class BingConversation {
     if (this.#isSessionStarted) {
       isStartOfSession = false;
     } else {
-      const { clientId, conversationId, conversationSignature } =
-        await createConversation(this.cookie, this.otherHeaders);
+      const {
+        clientId,
+        conversationId,
+        conversationSignature,
+        encryptedConversationSignature,
+      } = await createConversation(this.cookie, this.otherHeaders);
       this.#conversationId = conversationId;
       this.#clientId = clientId;
       this.#conversationSignature = conversationSignature;
+      this.#encryptedConversationSignature = encryptedConversationSignature;
     }
     const conversationId = this.#conversationId;
     const clientId = this.#clientId;
     const conversationSignature = this.#conversationSignature;
+    const encryptedConversationSignature = this
+      .#encryptedConversationSignature as string;
 
     const query = formatQuery(prompt, {
       ...options,
@@ -94,7 +102,11 @@ export class BingConversation {
     } as SydneyQueryOptions);
     this.#isSessionStarted = true;
     this.messages.push({ prompt });
-    const response = await makeChatHubRequest(query, options);
+    const response = await makeChatHubRequest(
+      query,
+      encryptedConversationSignature,
+      options,
+    );
     this.messages[this.messages.length - 1].response = response.text;
     this.history.push(response);
     return response;
